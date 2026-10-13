@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TikTok → WhatsApp Stickers</title>
+  <style>
+    :root {color-scheme: dark; font-family: system-ui, -apple-system, Segoe UI, sans-serif; background: #0b0b12; color: #f5f5fb}
+    body {margin:0; min-height:100vh; display:flex; justify-content:center; padding:36px 15px; box-sizing:border-box; background: radial-gradient(ellipse at top right, #2a1849, transparent 44%), #0b0b12}
+    .wrap {max-width:870px; width:100%} .eyebrow {font-size:12px; text-transform:uppercase; letter-spacing:.16em; color:#c5a5fb; font-weight:800}
+    h1{font-size:clamp(29px, 4vw, 45px); margin:7px 0 9px; letter-spacing:-.05em} .lead {color:#a7a7b9; margin-top:0; line-height:1.7}
+    .status {border:1px solid #373048; border-radius:15px; background:#1d172c; padding:15px 18px; margin:24px 0; color:#dbcaef}
+    .layout {display:grid; grid-template-columns:1fr 1.4fr; gap:18px} .card {background:#161623; border:1px solid #333246; border-radius:19px; padding:22px; min-width:0}
+    .card h2 {font-size:17px; margin:0 0 15px} .preview {background:radial-gradient(circle at center, #343348 0%, #222232 50%, #191925 100%); border-radius:14px; aspect-ratio:1; display:grid; place-items:center; overflow:hidden; margin-bottom:12px}
+    .preview img {width:100%; height:100%; object-fit:contain; image-rendering:auto} .placeholder{padding:18px; text-align:center; color:#88889f}
+    .meta{color:#adabc0; font-size:13px; line-height:1.65} label{display:block; margin:14px 0 8px; color:#b8b5ca; font-weight:600; font-size:14px}
+    select,input {background:#222235; border:1px solid #48465d; color:#fff; border-radius:10px; width:100%; padding:12px; box-sizing:border-box; font:inherit}
+    button {background:#9865f6; color:#fff; padding:13px 18px; border:0; border-radius:10px; cursor:pointer; font-weight:750; font-size:14px; transition:filter .15s}
+    button:hover:not(:disabled){filter:brightness(1.18)}button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#343047}
+    .actions{display:flex; flex-wrap:wrap; gap:9px; margin-top:16px} .feedback{min-height:25px; margin-top:15px; color:#dfd1fb; line-height:1.45; overflow-wrap:anywhere}
+    .importer {margin:0 0 18px; padding:20px 22px; background:#171426; border:1px solid #48405d; border-radius:17px}
+    .importer h2 {font-size:18px;margin:0 0 8px}
+    .importer .lead {font-size:14px;line-height:1.6;margin:0}
+    .importer-grid {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;margin-top:11px}
+    .importer-grid input {min-width:0}
+    .importer .feedback {margin-top:9px}
+    .file-label {display:inline-block;cursor:pointer;font-size:13px;color:#d5bcff;text-decoration:underline;margin:12px 0 0}
+    .file-label input {display:none}
+    .direct-option{margin-top:18px;padding:13px 14px;border:1px solid #4a3b67;border-radius:12px;background:#211a31}
+    .direct-option label{display:flex;align-items:flex-start;gap:11px;margin:0;cursor:pointer;color:#f1e7ff}
+    .direct-option input{width:18px;height:18px;flex:none;margin:2px 0 0;accent-color:#9865f6}
+    .direct-hint{margin:9px 0 0 29px;font-size:13px;color:#baaed4;line-height:1.5;overflow-wrap:anywhere}
+    @media(max-width:580px){.importer-grid{grid-template-columns:1fr}}
+    .help{margin-top:18px;padding:19px 24px; border:1px solid #2e2d40; border-radius:15px; color:#aaa9bb; font-size:14px; line-height:1.7}ol{padding-left:21px;margin:7px 0} code{color:#d5c2ff} a{color:#cbb2ff}
+    @media(max-width:680px){.layout{grid-template-columns:1fr}.preview{max-height:260px}body{padding-top:20px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="eyebrow">LOCAL • WINDOWS • PRIVÉ</div>
+    <h1>TikTok <span style="color:#be9aff">→</span> WhatsApp</h1>
+    <p class="lead">Des stickers TikTok dans le véritable format sticker WhatsApp, animation conservée lorsque la source et les contraintes techniques le permettent.</p>
+    <div class="status" id="status">Connexion au service local…</div>
+    <section class="importer" aria-labelledby="import-title">
+      <h2 id="import-title">Importer un sticker TikTok par lien</h2>
+      <p class="lead">Colle l’URL directe de l’image ou de l’animation (WebP, AWebP, GIF, etc.). Le Bridge la télécharge lui-même : aucune requête vers 127.0.0.1 depuis Violentmonkey n’est nécessaire.</p>
+      <form id="import-form" class="importer-grid">
+        <input id="sticker-url" type="url" inputmode="url" placeholder="https://p16...tiktokcdn.com/...awebp?..." autocomplete="off" spellcheck="false" required aria-label="URL directe du sticker TikTok">
+        <button id="import-url" type="submit">Importer le sticker</button>
+      </form>
+      <label class="file-label" for="sticker-file">Ou sélectionner un fichier WebP, GIF, PNG, JPEG ou AVIF (si le CDN bloque le lien)</label>
+      <input type="file" id="sticker-file" accept="image/webp,image/gif,image/png,image/jpeg,image/avif,.awebp" hidden>
+      <p id="import-feedback" class="feedback" role="status" aria-live="polite"></p>
+    </section>
+    <section class="layout">
+      <div class="card">
+        <h2>01 / Sticker importé</h2>
+        <div class="preview"><img id="preview" alt="Aperçu du sticker" hidden><span class="placeholder" id="placeholder">Sur TikTok Web, survole ton sticker et clique sur « → WhatsApp ».</span></div>
+        <div class="meta" id="metadata">En attente d'un sticker…</div>
+        <div class="actions"><button class="secondary" id="refresh">Actualiser</button><button class="secondary" id="save" disabled>Télécharger WebP</button></div>
+      </div>
+      <div class="card">
+        <h2>02 / Envoyer dans une discussion</h2>
+        <p class="lead">Le dernier destinataire est mémorisé dans ce navigateur. L'envoi automatique est facultatif et reste désactivé par défaut.</p>
+        <label for="filter">Rechercher un contact ou groupe</label>
+        <input id="filter" type="search" autocomplete="off" placeholder="Nom du contact ou groupe">
+        <label for="chat">Discussion WhatsApp</label>
+        <select id="chat"><option value="">Connecte d'abord WhatsApp…</option></select>
+        <div class="direct-option">
+          <label for="direct-mode"><input id="direct-mode" type="checkbox"> <span><strong>Envoi direct au dernier contact</strong><br><small>Après activation, un clic sur ↗ WhatsApp depuis TikTok suffit pour importer puis envoyer au contact mémorisé, sans nouvelle confirmation.</small></span></label>
+          <p id="direct-hint" class="direct-hint" role="status">Choisis une discussion pour activer ce mode.</p>
+        </div>
+        <div class="actions"><button class="secondary" id="refresh-chats">Rafraîchir les discussions</button><button id="send" disabled>Envoyer comme sticker</button></div>
+        <p class="feedback" role="status" id="feedback"></p>
+      </div>
+    </section>
+    <section class="help">
+      <strong>Mode d'emploi</strong>
+      <ol>
+        <li>Scanne le QR code affiché dans le terminal (WhatsApp mobile → Appareils connectés).</li>
+        <li>Sur TikTok Web, ouvre le chat où se trouve le sticker envoyé depuis le téléphone.</li>
+        <li>Survole le sticker et clique sur « ↗ WhatsApp ». Le lien détecté remplira automatiquement le champ ci-dessus ; clique sur « Importer le sticker ».</li>
+        <li>Choisis une discussion ; elle sera conservée pour les prochaines utilisations dans ce navigateur. Pour l'envoi en un clic depuis TikTok, coche « Envoi direct au dernier contact » et valide une seule fois son activation.</li>
+        <li>Avec l'envoi direct activé, le clic sur ↗ WhatsApp ouvre le Bridge et lance import + envoi automatiquement. Sans ce mode, importe le sticker et confirme l'envoi comme auparavant.</li>
+      </ol>
+      <span>La conversion s'effectue localement. Un client WhatsApp non officiel est utilisé : il peut cesser de fonctionner après une mise à jour et comporte un risque pour le compte.</span>
+    </section>
+  </main>
+  <script src="/dashboard.js"></script>
+</body>
+</html>

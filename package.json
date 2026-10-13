@@ -1,0 +1,19 @@
+{
+  "name": "tiktok-whatsapp-sticker-bridge",
+  "version": "0.6.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check tiktok-to-whatsapp.user.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "qrcode-terminal": "^0.12.0",
+    "sharp": "^0.34.3",
+    "whatsapp-web.js": "^1.34.7"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,38 @@
+# Dépendances et sorties temporaires
+node_modules/
+.pnpm-store/
+dist/
+build/
+coverage/
+.tmp/
+tmp/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Sessions WhatsApp : données sensibles, ne jamais committer
+.wwebjs_auth/
+.wwebjs_cache/
+**/.wwebjs_auth/
+**/.wwebjs_cache/
+
+# Secrets et configuration locale
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Fichiers spécifiques machine et outils
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+
+# Archives / caches produits localement
+*.zip
+.cache/
